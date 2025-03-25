@@ -57,4 +57,25 @@ class TicketController extends Controller
         $ticket = $this->ticketService->createTicket($request->validated(), Auth::user());
         return response()->json($ticket, 201);
     }
+
+    /**
+     * @OA\Get(
+     *     path="/api/tickets/{id}",
+     *     summary="Get a ticket with responses",
+     *     tags={"Tickets"},
+     *     security={{"sanctum":{}}},
+     *     @OA\Parameter(name="id", in="path", required=true),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Successful operation",
+     *         @OA\JsonContent(ref="#/components/schemas/Ticket")
+     *     ),
+     * )
+     */
+    public function show(Ticket $ticket): JsonResponse
+    {
+        $ticketWithDetails = $this->ticketService->getTicketWithDetails($ticket);
+        return response()->json($ticketWithDetails);
+    }
+
     }
