@@ -23,4 +23,19 @@ class TicketController extends Controller
         $this->ticketService = $ticketService;
         $this->responseService = $responseService;
     }
+
+    /**
+     * @OA\Get(
+     *     path="/api/tickets",
+     *     summary="Get user's tickets",
+     *     tags={"Tickets"},
+     *     security={{"sanctum":{}}},
+     *     @OA\Response(response=200, description="Successful operation"),
+     * )
+     */
+    public function index(): JsonResponse
+    {
+        $tickets = $this->ticketService->getAllTicketsForUser(Auth::user());
+        return response()->json($tickets);
+    }
     }
