@@ -11,6 +11,29 @@ use App\Services\ResponseService;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
+
+/**
+ * @OA\Schema(
+ *     schema="Ticket",
+ *     type="object",
+ *     @OA\Property(property="subject", type="string"),
+ *     @OA\Property(property="description", type="string"),
+ * )
+ * 
+ * @OA\Schema(
+ *     schema="TicketWithAgent",
+ *     allOf={@OA\Schema(ref="#/components/schemas/Ticket")},
+ *     @OA\Property(
+ *         property="assigned_agent",
+ *         type="object",
+ *         @OA\Property(property="id", type="integer"),
+ *         @OA\Property(property="name", type="string"),
+ *         @OA\Property(property="email", type="string")
+ *     )
+ * )
+ *
+ */
+
 class TicketController extends Controller
 {
     use AuthorizesRequests;
@@ -138,4 +161,39 @@ class TicketController extends Controller
         }
     }
 
+    /**
+     * @OA\Post(
+     *     path="/api/tickets/{id}/claim",
+     *     summary="Claim a ticket",
+     *     tags={"Tickets"},
+     *     security={{"sanctum":{}}},
+     *     @OA\Parameter(name="id", in="path", required=true),
+     *     @OA\Response(response=200, description="Ticket claimed"),
+     * )
+     */
+    public function claim(Ticket $ticket): JsonResponse
+    {
+        $updatedTicket = $this->ticketService->claimTicket($ticket, Auth::user());
+        return response()->json([
+            'message' => 'Ticket claimed successfully',
+            'ticket' => $updatedTicket
+        ]);
     }
+
+    /**
+     * @OA\Patch(
+     *     path="/api/tickets/{id}/resolve",
+     *     summary="Mark ticket as resolved",
+     *     tags={"Tickets"},
+     *     security={{"sanctum":{}}},
+     *     @OA\Parameter(name="id", in="path", required=true),
+     *     @OA\Response(response=200, description="Ticket resolved"),
+     * )
+     */
+    public function resolve(Ticket $ticket): JsonResponse
+    {
+        $this->authorize('resolve', $ticket);
+        $resolvedTicket = $this->ticketService->resolveTicket($ticket);
+        return response()->json($resolvedTicket);
+    }
+}
