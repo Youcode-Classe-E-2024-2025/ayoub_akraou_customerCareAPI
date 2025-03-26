@@ -39,7 +39,7 @@ class TicketController extends Controller
     use AuthorizesRequests;
     protected $ticketService;
     protected $responseService;
-
+    
 
     public function __construct(TicketService $ticketService, ResponseService $responseService)
     {
@@ -150,9 +150,10 @@ class TicketController extends Controller
     {
         try {
             $this->authorize('viewAvailableTickets', Ticket::class);
-
+            
             $tickets = $this->ticketService->getAvailableTickets();
             return response()->json($tickets);
+            
         } catch (\Exception $e) {
             return response()->json([
                 'message' => 'Failed to fetch tickets',
