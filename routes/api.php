@@ -18,3 +18,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/tickets/{ticket}/claim', [TicketController::class, 'claim']);
     Route::patch('/tickets/{ticket}/resolve', [TicketController::class, 'resolve']);
 
+    Route::post('/tickets/{ticket}/responses', [ResponseController::class, 'store']);
+    Route::get('/tickets/{ticket}/responses', [ResponseController::class, 'index']);
+});
