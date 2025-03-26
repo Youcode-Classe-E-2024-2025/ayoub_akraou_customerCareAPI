@@ -98,4 +98,44 @@ class TicketController extends Controller
         return response()->json($ticket);
     }
 
+    /**
+     * @OA\Delete(
+     *     path="/api/tickets/{id}",
+     *     summary="Delete a ticket",
+     *     tags={"Tickets"},
+     *     security={{"sanctum":{}}},
+     *     @OA\Parameter(name="id", in="path", required=true),
+     *     @OA\Response(response=200, description="Ticket deleted"),
+     * )
+     */
+    public function destroy(int $id): JsonResponse
+    {
+        $this->ticketService->deleteTicket($id, Auth::user());
+        return response()->json(['message' => 'Ticket deleted successfully']);
+    }
+
+    /**
+     * @OA\Get(
+     *     path="/api/tickets/available",
+     *     summary="Get available open tickets",
+     *     tags={"Tickets"},
+     *     security={{"sanctum":{}}},
+     *     @OA\Response(response=200, description="Success"),
+     * )
+     */
+    public function availableTickets(): JsonResponse
+    {
+        try {
+            $this->authorize('viewAvailableTickets', Ticket::class);
+
+            $tickets = $this->ticketService->getAvailableTickets();
+            return response()->json($tickets);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Failed to fetch tickets',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+
     }
