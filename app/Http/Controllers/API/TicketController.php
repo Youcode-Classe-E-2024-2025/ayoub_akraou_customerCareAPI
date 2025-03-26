@@ -78,4 +78,24 @@ class TicketController extends Controller
         return response()->json($ticketWithDetails);
     }
 
+    /**
+     * @OA\Put(
+     *     path="/api/tickets/{id}",
+     *     summary="Update a ticket",
+     *     tags={"Tickets"},
+     *     security={{"sanctum":{}}},
+     *     @OA\Parameter(name="id", in="path", required=true),
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(ref="#/components/schemas/Ticket")
+     *     ),
+     *     @OA\Response(response=200, description="Ticket updated"),
+     * )
+     */
+    public function update(UpdateTicketRequest $request, int $id): JsonResponse
+    {
+        $ticket = $this->ticketService->updateTicket($id, $request->validated(), Auth::user());
+        return response()->json($ticket);
+    }
+
     }
