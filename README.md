@@ -1,99 +1,126 @@
-# CustomerCareAPI - Documentation des Endpoints
+# ayoub_akraou_customerCareAPI
 
-## Introduction
-Cette API RESTful gère un système de support client avec des fonctionnalités d'authentification, de gestion de tickets et de réponses.
+**CustomerCareAPI – API avancée pour un service client avec Laravel et consommation en JS.**
+
+**Project Supervisor:** Iliass RAIHANI.
+
+**Author:** Ayoub Akraou.
+
+## Links
+
+- **Presentation Link :** [View Presentation](https://www.canva.com/design/DAGjBqlPGMA/gaZpkEDXmeAg1iPhuEMA5g/edit?utm_content=DAGjBqlPGMA&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton)
+- **Backlog Link :** [View on Backlog](https://github.com/orgs/Youcode-Classe-E-2024-2025/projects/182/views/1)
+
+
+### Créé : 28/03/25
+
+
+# Configuration et Exécution du Projet Laravel
 
 ## Prérequis
-- PHP 8.4+
-- Laravel 12
-- Sanctum pour l'authentification
 
-## Authentification
+Avant de commencer, assurez-vous d'avoir installé les outils suivants :
 
-### Inscription
-- **Endpoint**: `POST /api/register`
-- **Description**: Enregistre un nouvel utilisateur
-- **Paramètres requis**:
-  - `name`: Nom de l'utilisateur
-  - `email`: Adresse email unique
-  - `password`: Mot de passe (min. 8 caractères)
-- **Réponse**: Token d'authentification Sanctum
+- **PHP** (à partir de la version recommandée par Laravel, voir [PHP](https://www.php.net/)).
+- **Composer** ([télécharger ici](https://getcomposer.org/download/)).
+- **Node.js** et **npm** ([télécharger ici](https://nodejs.org/)).
 
-### Connexion
-- **Endpoint**: `POST /api/login`
-- **Description**: Authentifie un utilisateur
-- **Paramètres requis**:
-  - `email`: Adresse email
-  - `password`: Mot de passe
-- **Réponse**: Token d'authentification Sanctum
+## Installation du projet
 
-### Déconnexion
-- **Endpoint**: `POST /api/logout`
-- **Description**: Invalide le token d'authentification de l'utilisateur courant
-- **Authentification requise**: Oui
+### 1. Cloner le dépôt
 
-## Gestion des Tickets
+Ouvrez un terminal et exécutez :
+```bash
+git clone https://github.com/Youcode-Classe-E-2024-2025/ayoub_akraou_customerCareAPI.git
+cd ayoub_akraou_customerCareAPI
+```
 
-### Créer un ticket
-- **Endpoint**: `POST /api/tickets`
-- **Description**: Crée un nouveau ticket de support
-- **Authentification requise**: Oui
-- **Paramètres requis**:
-  - `sujet`: Titre du ticket
-  - `description`: Description détaillée
+### 2. Installer les dépendances PHP
 
-### Lister les tickets
-- **Endpoint**: `GET /api/tickets`
-- **Description**: Récupère la liste des tickets
-- **Authentification requise**: Oui
+Dans le dossier du projet, exécutez :
+```bash
+composer install
+```
 
-### Détails d'un ticket
-- **Endpoint**: `GET /api/tickets/{id}`
-- **Description**: Récupère les détails d'un ticket spécifique
-- **Authentification requise**: Oui
+### 3. Configurer le fichier `.env`
 
-### Mettre à jour un ticket
-- **Endpoint**: `PUT/PATCH /api/tickets/{id}`
-- **Description**: Modifie les informations d'un ticket
-- **Authentification requise**: Oui
+Copiez le fichier `.env.example` et renommez-le en `.env` :
+```bash
+cp .env.example .env  # Linux/Mac
+copy .env.example .env # Windows
+```
 
-### Supprimer un ticket
-- **Endpoint**: `DELETE /api/tickets/{id}`
-- **Description**: Supprime un ticket
-- **Authentification requise**: Oui
+Modifiez les paramètres de la base de données dans `.env` :
+```env
+DB_CONNECTION=pgsql
+DB_HOST=127.0.0.1
+DB_PORT=5432
+DB_DATABASE=YOUR_DATABSE_NAME
+DB_USERNAME=YOUR_USERNAME
+DB_PASSWORD=YOUR_PASSWORD
+```
 
-### Tickets disponibles
-- **Endpoint**: `GET /api/tickets/available`
-- **Description**: Liste les tickets non attribués
-- **Authentification requise**: Oui
+### 4. Générer la clé d'application
 
-### Réclamer un ticket
-- **Endpoint**: `POST /api/tickets/{id}/claim`
-- **Description**: Attribue le ticket à l'agent connecté
-- **Authentification requise**: Oui
+Exécutez la commande suivante pour générer une clé unique :
+```bash
+php artisan key:generate
+```
 
-### Résoudre un ticket
-- **Endpoint**: `PATCH /api/tickets/{id}/resolve`
-- **Description**: Marque un ticket comme résolu
-- **Authentification requise**: Oui
+### 5. Exécuter les migrations et seeders (si disponibles)
 
-## Gestion des Réponses
+Créez la base de données et appliquez les migrations :
+```bash
+php artisan migrate --seed
+```
 
-### Ajouter une réponse à un ticket
-- **Endpoint**: `POST /api/tickets/{id}/responses`
-- **Description**: Ajoute une réponse à un ticket spécifique
-- **Authentification requise**: Oui
+### 6. Installer les dépendances front-end
 
-### Lister les réponses d'un ticket
-- **Endpoint**: `GET /api/tickets/{id}/responses`
-- **Description**: Récupère toutes les réponses pour un ticket
-- **Authentification requise**: Oui
+Installez les dépendances npm :
+```bash
+npm install
+```
+Si votre projet utilise Vite, démarrez le build :
+```bash
+npm run dev
+```
 
-## Authentification
-Tous les endpoints (sauf login et register) nécessitent un token Sanctum valide dans l'en-tête Authorization.
+### 7. Démarrer le serveur local
 
-## Gestion des Erreurs
-- 401 Unauthorized: Token invalide ou manquant
-- 403 Forbidden: Droits insuffisants
-- 404 Not Found: Ressource non trouvée
-- 422 Unprocessable Entity: Erreurs de validation
+Utilisez la commande artisan pour démarrer le serveur Laravel :
+```bash
+php artisan serve
+```
+Accédez au projet via : [http://127.0.0.1:8000](http://127.0.0.1:8000)
+
+
+## Contexte du projet:
+
+- Le projet CustomerCareAPI consiste à développer une API avancée en Laravel pour la gestion d’un service client. L’API devra gérer les tickets d’assistance, permettre l’attribution de demandes aux agents, suivre l’état des requêtes et fournir un historique des interactions. L’objectif est de concevoir une API REST robuste en respectant les bonnes pratiques de développement et d’architecture, puis de la consommer via n’importe quel framework JS (Vue.js, React, Angular, etc.).
+
+
+## **Objectifs du projet :**
+
+#### **Fonctionnels :**
+L’objectif est d’apprendre à créer une API avancée avec Laravel et de la consommer via un framework JavaScript, en intégrant :
+
+✅ Swagger pour documenter l’API.
+
+✅ Service Layer Design Pattern pour organiser le code.
+
+✅ Gestion avancée des requêtes API.
+
+✅ Authentification et autorisation sécurisées avec Laravel Sanctum.
+
+✅ Consommation de l’API avec un framework JS.
+
+## **Modalités d'évaluation**
+
+L’évaluation portera sur les critères suivants :
+✅ Conception de l’API : respect des bonnes pratiques REST et architecture modulaire.
+✅ Service Layer Design Pattern correctement implémenté.
+✅ Swagger : documentation complète et claire de l’API.
+✅ Tests PHPUnit : couverture correcte avec tests unitaires et fonctionnels.
+✅ Consommation de l’API avec un framework JS : bonne interaction entre le frontend et l’API.
+✅ Gestion de projet : organisation rigoureuse sur GitHub (backlog, commits, Kanban).
+✅ Présentation et démonstration lors de la soutenance.
