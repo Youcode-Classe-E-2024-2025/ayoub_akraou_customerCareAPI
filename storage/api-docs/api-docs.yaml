@@ -1,0 +1,138 @@
+openapi: 3.0.0
+info:
+  title: CustomerCareAPI
+  description: Documentation de l'API
+  version: 1.0.0
+servers:
+  - url: http://localhost:8000/api
+    description: Serveur local
+paths:
+  /users:
+    get:
+      summary: Liste tous les utilisateurs
+      responses:
+        '200':
+          description: Liste des utilisateurs
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+        '404':
+          description: Utilisateur non trouvé
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+    post:  
+      summary: creer un nouveau utilisateur
+      requestBody:
+        required: true,
+        content:
+          application/json:
+            schema: 
+              $ref: '#/components/schemas/User'
+      responses:
+        '201':
+          description: Utilisateur créé
+          content: 
+            application/json:
+              schema:
+                $ref: '#components/schemas/User'
+        '400':
+          description: Bad request
+          content: 
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+    patch:
+      summary: Met à jour un utilisateur
+      requestBody:
+        required: true,
+        content:
+          application/json:
+            schema: 
+              $ref: '#/components/schemas/User'
+      responses:
+        '200':
+          description: Utilisateur mis à jour
+          content: 
+            application/json:
+              schema:
+                $ref: '#components/schemas/User'
+        '400':
+          description: Bad request
+          content: 
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+    update:
+      summary: Met à jour un utilisateur
+      requestBody:
+        required: true,
+        content:
+          application/json:
+            schema: 
+              $ref: '#/components/schemas/User'
+      responses:
+        '200':
+          description: Utilisateur mis à jour
+          content: 
+            application/json:
+              schema:
+                $ref: '#components/schemas/User'
+        '400':
+          description: Bad request
+          content: 
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+    delete:
+      summary: Supprime un utilisateur
+      responses:
+        '200':
+          description: Utilisateur supprimé
+          content: 
+            application/json:
+              schema:
+                $ref: '#components/schemas/User'
+        '404':
+          description: Utilisateur non trouvé
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+
+
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        email:
+          type: string
+          format: email
+      required:
+        - id
+        - name
+        - email

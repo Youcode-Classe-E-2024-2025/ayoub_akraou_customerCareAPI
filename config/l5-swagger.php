@@ -81,8 +81,9 @@ return [
             /*
              * Absolute path to location where parsed annotations will be stored
              */
-            'docs' => storage_path('api-docs'),
-
+            'docs' => storage_path('api-docs'), // Juste le dossier, pas le fichier
+            'docs_json' => 'api-docs.json', // Nom du fichier JSON
+            'docs_yaml' => 'api-docs.yaml', // Nom du fichier YAML
             /*
              * Absolute path to directory where to export views
              */
@@ -208,13 +209,13 @@ return [
                         ],
                     ],
                 ],
-                */
                 'sanctum' => [ // Unique name of security
                     'type' => 'apiKey', // Valid values are "basic", "apiKey" or "oauth2".
                     'description' => 'Enter token in format (Bearer <token>)',
                     'name' => 'Authorization', // The name of the header or query parameter to be used.
                     'in' => 'header', // The location of the API key. Valid values are "query" or "header".
                 ],
+                */
             ],
             'security' => [
                 /*
